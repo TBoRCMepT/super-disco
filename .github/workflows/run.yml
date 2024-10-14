@@ -1,0 +1,46 @@
+name: CI
+  
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target_cpu: [amd64, x86]
+        build_configuration: [Debug, Release]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up GCC
+        run: sudo apt-get install -y build-essential
+
+      - name: Install dependencies
+        run: |
+             chmod o+x install_dependencies.sh
+             ./install_dependencies.sh
+
+      - name: Run clang-tidy
+        run: clang-tidy src/*.cpp
+
+      - name: Run clang-format
+        run: clang-format -i src/*.cpp
+
+      - name: Build with CMake
+        run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_configuration }} ..
+          make
+
+      - name: Run tests
+        run: |
+          cd build
+          ./myProgram

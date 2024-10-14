@@ -1,8 +1,18 @@
 cmake_minimum_required(VERSION 3.28.3 FATAL_ERROR)
 
-project(MyBebra
-    VERSION 0.1 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+set()
+
+project(MyProject
+    VERSION 0.2
     LANGUAGES C CXX
 )
 
-add_executable(BigBebra src/main.cpp)
+enable_testing()
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
+
+add_executable(myProgram src/main.cpp)
+target_link_libraries(my_tests ${GTEST_LIBRARIES} pthread)
+
+add_test(MyTest myProgram)
