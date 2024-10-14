@@ -24,8 +24,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-             chmod o+x install_dependencies.sh
-             ./install_dependencies.sh
+          sudo apt update
+          sudo apt install -y clang cmake libgtest-dev clang-tidy clang-format
+          cd /usr/src/gtest
+          sudo cmake .
+          sudo make
+          sudo cp *.a /usr/lib
 
       - name: Run clang-tidy
         run: clang-tidy src/*.cpp
