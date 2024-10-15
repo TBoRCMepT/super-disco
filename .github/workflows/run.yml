@@ -1,0 +1,46 @@
+name: CI
+  
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target_cpu: [amd64, x86]
+        build_configuration: [Debug, Release]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up GCC
+        run: sudo apt-get install -y build-essential
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y clang cmake libgtest-dev clang-tidy clang-format
+
+      - name: Build with CMake
+        run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_configuration }} ..
+          make
+
+      - name: Run clang-tidy
+        run: clang-tidy -checks="readability-identifier-naming" -p build/compile_commands src/*.cpp
+
+      - name: Run clang-format
+        run: clang-format -i src/*.cpp
+
+      - name: Run tests
+        run: |
+          cd build
+          ./myProgram
