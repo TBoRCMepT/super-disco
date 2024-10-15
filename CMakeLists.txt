@@ -3,9 +3,11 @@ cmake_minimum_required(VERSION 3.28.3 FATAL_ERROR)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
 
 project(MyProject
-    VERSION 0.2
+    VERSION 0.3
     LANGUAGES C CXX
 )
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 enable_testing()
 find_package(GTest REQUIRED)

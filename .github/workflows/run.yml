@@ -27,18 +27,18 @@ jobs:
           sudo apt update
           sudo apt install -y clang cmake libgtest-dev clang-tidy clang-format
 
-      - name: Run clang-tidy
-        run: clang-tidy src/*.cpp
-
-      - name: Run clang-format
-        run: clang-format -i src/*.cpp
-
       - name: Build with CMake
         run: |
           mkdir build
           cd build
           cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_configuration }} ..
           make
+
+      - name: Run clang-tidy
+        run: clang-tidy -checks="readability-identifier-naming" -p build/compile_commands src/*.cpp
+
+      - name: Run clang-format
+        run: clang-format -i src/*.cpp
 
       - name: Run tests
         run: |
