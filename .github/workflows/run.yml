@@ -35,7 +35,9 @@ jobs:
           make
 
       - name: Run clang-tidy
-        run: clang-tidy -checks="readability-identifier-naming" -p build/compile_commands src/*.cpp
+        run: |
+          clang-tidy -checks="readability-identifier-naming" -p build/compile_commands src/*.cpp
+          continue-on-error: false
 
       - name: Run clang-format
         run: clang-format -i src/*.cpp
