@@ -1,5 +1,5 @@
 name: CI
-  
+ 
 on:
   push:
     branches:
@@ -37,7 +37,7 @@ jobs:
       - name: Run clang-tidy
         run: |
           clang-tidy -checks="readability-identifier-naming" -p build/compile_commands src/*.cpp
-          continue-on-error: false
+        continue-on-error: false
 
       - name: Run clang-format
         run: clang-format -i src/*.cpp
