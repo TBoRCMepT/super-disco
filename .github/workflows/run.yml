@@ -41,7 +41,7 @@ jobs:
 
       - name: Run clang-format
         run: |
-          clang-format --Werror -i src/*.cpp
+          git diff --exit-code < (clang-format -style=file -i src/*.cpp)
         continue-on-error: false
 
       - name: Run tests
