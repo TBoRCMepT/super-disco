@@ -41,7 +41,14 @@ jobs:
 
       - name: Run clang-format
         run: |
-          git diff --exit-code < (clang-format -style=file -i src/*.cpp)
+          clang-format -style=file -output-replacements-xml src/*.cpp
+          RESULT=$?
+          if [ $RESULT -eq 0 ]; then
+            echo "No formatting issues found."
+          else
+            echo "Formatting issues found. Stopping the CI pipeline."
+            exit 1
+          fi
         continue-on-error: false
 
       - name: Run tests

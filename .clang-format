@@ -1,0 +1,8 @@
+Language: Cpp
+IndentWidth: 4
+UseTab: false
+TabWidth: 4
+ColumnLimit: 80
+BreakBeforeBraces: Allman
+AlignOperands: true
+IndentCaseLabels: true
